@@ -45,6 +45,11 @@ export const ROUTING_MODES: RoutingMode[] = [
         desc: "Autark classifies each request and routes it to the best model for the job. This is what most teams should use.",
     },
     {
+        model: "autark-open",
+        label: "Autark Open",
+        desc: "Cheapest frontier models. Direct API access to DeepSeek — not zero data retention. Your prompts may be used to improve the underlying models.",
+    },
+    {
         model: "autark-flash",
         label: "Autark Flash",
         desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
@@ -70,7 +75,7 @@ export const LEGACY_MODES: string[] = ["flash", "pro", "ultra"];
  * (flash/pro/ultra) for backwards compatibility; both are normalized
  * server-side to the stored internal mode.
  */
-export const USAGE_MODE_FILTER: string[] = ["autark-flash", "autark", "autark-deep"];
+export const USAGE_MODE_FILTER: string[] = ["autark-open", "autark-flash", "autark", "autark-deep"];
 
 /* ------------------------------------------------------------------ */
 /* Pricing tiers — token prices are USD per 1,000,000 tokens.         */
@@ -93,6 +98,16 @@ export interface PricingTier {
 }
 
 export const PRICING_TIERS: PricingTier[] = [
+    {
+        label: "Autark Open",
+        priceIn: 0.50,
+        priceOut: 1.10,
+        desc: "Cheapest frontier models. Direct DeepSeek API — not zero data retention. Your prompts may be used to improve the models. For hobbyists, prototyping, and non-sensitive workloads.",
+        cta: "Get Started",
+        href: DASHBOARD_URL,
+        category: "general",
+        highlighted: false,
+    },
     {
         label: "Autark Flash",
         priceIn: 1,

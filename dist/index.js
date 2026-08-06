@@ -26,6 +26,11 @@ exports.ROUTING_MODES = [
         desc: "Autark classifies each request and routes it to the best model for the job. This is what most teams should use.",
     },
     {
+        model: "autark-open",
+        label: "Autark Open",
+        desc: "Cheapest frontier models. Direct API access to DeepSeek — not zero data retention. Your prompts may be used to improve the underlying models.",
+    },
+    {
         model: "autark-flash",
         label: "Autark Flash",
         desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
@@ -49,8 +54,18 @@ exports.LEGACY_MODES = ["flash", "pro", "ultra"];
  * (flash/pro/ultra) for backwards compatibility; both are normalized
  * server-side to the stored internal mode.
  */
-exports.USAGE_MODE_FILTER = ["autark-flash", "autark", "autark-deep"];
+exports.USAGE_MODE_FILTER = ["autark-open", "autark-flash", "autark", "autark-deep"];
 exports.PRICING_TIERS = [
+    {
+        label: "Autark Open",
+        priceIn: 0.50,
+        priceOut: 1.10,
+        desc: "Cheapest frontier models. Direct DeepSeek API — not zero data retention. Your prompts may be used to improve the models. For hobbyists, prototyping, and non-sensitive workloads.",
+        cta: "Get Started",
+        href: exports.DASHBOARD_URL,
+        category: "general",
+        highlighted: false,
+    },
     {
         label: "Autark Flash",
         priceIn: 1,
@@ -76,7 +91,7 @@ exports.PRICING_TIERS = [
         priceIn: 5,
         priceOut: 10,
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
-        cta: "Contact Sales",
+        cta: "Talk to a founder",
         href: "mailto:sales@autark.ai",
         category: "general",
         highlighted: false,
@@ -86,7 +101,7 @@ exports.PRICING_TIERS = [
         priceIn: 5,
         priceOut: 10,
         desc: "Precision legal reasoning. Every query routes through the best model for jurisdiction-aware analysis.",
-        cta: "Contact Sales",
+        cta: "Talk to a founder",
         href: "mailto:sales@autark.ai",
         category: "specialist",
         highlighted: false,
