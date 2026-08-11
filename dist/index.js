@@ -28,7 +28,7 @@ exports.ROUTING_MODES = [
     {
         model: "autark-open",
         label: "Autark Open",
-        desc: "Cheapest frontier models. Direct API access to DeepSeek — not zero data retention. Your prompts may be used to improve the underlying models.",
+        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
     },
     {
         model: "autark-flash",
@@ -60,7 +60,7 @@ exports.PRICING_TIERS = [
         label: "Autark Open",
         priceIn: 0.50,
         priceOut: 1.10,
-        desc: "Cheapest frontier models. Direct DeepSeek API — not zero data retention. Your prompts may be used to improve the models. For hobbyists, prototyping, and non-sensitive workloads.",
+        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
         category: "general",
