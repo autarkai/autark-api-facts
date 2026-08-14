@@ -100,8 +100,8 @@ export interface PricingTier {
 export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Open",
-        priceIn: 0.50,
-        priceOut: 1.10,
+        priceIn: 1.00,
+        priceOut: 2.20,
         desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
         cta: "Get Started",
         href: DASHBOARD_URL,
