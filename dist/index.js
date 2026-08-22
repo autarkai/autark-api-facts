@@ -5,7 +5,7 @@
 // a shared package and consumed by the marketing site and the dashboard.
 // Dependency-free and framework-agnostic (no React, no Next imports).
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.LEGACY_MODES = exports.ROUTING_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
+exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.PRIVATE_SUFFIX = exports.LEGACY_MODES = exports.ROUTING_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
 exports.formatPrice = formatPrice;
 exports.formatAudioPrice = formatAudioPrice;
 /** Base URL customers point their OpenAI SDK at. */
@@ -36,9 +36,14 @@ exports.ROUTING_MODES = [
         desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
     },
     {
-        model: "autark",
-        label: "Autark",
+        model: "autark-pro",
+        label: "Autark Pro",
         desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
+    },
+    {
+        model: "autark-agent",
+        label: "Autark Agent",
+        desc: "Agentic routing. Built for tool calling and multi-step agent workloads. Same smart routing, tuned for agents.",
     },
     {
         model: "autark-deep",
@@ -49,12 +54,18 @@ exports.ROUTING_MODES = [
 /** Deprecated internal aliases still accepted by the API for backwards compat. */
 exports.LEGACY_MODES = ["flash", "pro", "ultra"];
 /**
+ * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
+ * autark-deep, autark-agent) for the zero-data-retention variant: same quality,
+ * restricted to providers that never train on your prompts.
+ */
+exports.PRIVATE_SUFFIX = "-private";
+/**
  * Values accepted by the `mode` filter on GET /v1/usage.
  * The endpoint accepts these public names and also the legacy internal names
  * (flash/pro/ultra) for backwards compatibility; both are normalized
  * server-side to the stored internal mode.
  */
-exports.USAGE_MODE_FILTER = ["autark-open", "autark-flash", "autark", "autark-deep"];
+exports.USAGE_MODE_FILTER = ["autark-open", "autark-flash", "autark-pro", "autark-agent", "autark-deep"];
 exports.PRICING_TIERS = [
     {
         label: "Autark Open",
@@ -77,7 +88,7 @@ exports.PRICING_TIERS = [
         highlighted: false,
     },
     {
-        label: "Autark",
+        label: "Autark Pro",
         priceIn: 3,
         priceOut: 6,
         desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
@@ -87,6 +98,16 @@ exports.PRICING_TIERS = [
         highlighted: true,
     },
     {
+        label: "Autark Agent",
+        priceIn: 5,
+        priceOut: 10,
+        desc: "Agentic routing for tool calling and multi-step agents. Same smart routing, tuned for agent workloads.",
+        cta: "Get Started",
+        href: exports.DASHBOARD_URL,
+        category: "general",
+        highlighted: false,
+    },
+    {
         label: "Autark Deep",
         priceIn: 5,
         priceOut: 10,
@@ -94,26 +115,6 @@ exports.PRICING_TIERS = [
         cta: "Talk to a founder",
         href: "mailto:sales@autark.ai",
         category: "general",
-        highlighted: false,
-    },
-    {
-        label: "Autark Legal",
-        priceIn: 5,
-        priceOut: 10,
-        desc: "Precision legal reasoning. Every query routes through the best model for jurisdiction-aware analysis.",
-        cta: "Talk to a founder",
-        href: "mailto:sales@autark.ai",
-        category: "specialist",
-        highlighted: false,
-    },
-    {
-        label: "Autark Creative",
-        priceIn: 3,
-        priceOut: 6,
-        desc: "Best prose quality for every creative task. Writing, storytelling, marketing copy, and content generation.",
-        cta: "Get Started",
-        href: exports.DASHBOARD_URL,
-        category: "specialist",
         highlighted: false,
     },
 ];
@@ -136,7 +137,7 @@ function formatAudioPrice(usdPerMinute) {
     return `$${usdPerMinute}/min`;
 }
 exports.CHAT_PARAMS = [
-    { name: "model", type: "string", desc: "auto, autark-flash, autark, or autark-deep. Defaults to autark." },
+    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent, or autark-flash. Defaults to autark-pro." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 2048, max: 131072." },
@@ -159,7 +160,7 @@ exports.ERROR_CODES = [
 exports.REQUEST_HEADERS = [
     {
         header: "x-autark-mode",
-        desc: "Override the routing mode (auto, autark-flash, autark, or autark-deep) per request without changing the model field.",
+        desc: "Override the routing mode (auto, autark-pro, autark-deep, autark-agent, or autark-flash) per request without changing the model field.",
         soon: true,
     },
     {
