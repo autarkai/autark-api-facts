@@ -61,8 +61,8 @@ exports.USAGE_MODE_FILTER = ["autark-pro", "autark-agent", "autark-deep"];
 exports.PRICING_TIERS = [
     {
         label: "Autark Pro",
-        priceIn: 3,
-        priceOut: 6,
+        priceIn: 2.5,
+        priceOut: 5.5,
         desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -71,8 +71,8 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Agent",
-        priceIn: 5,
-        priceOut: 10,
+        priceIn: 1.2,
+        priceOut: 3,
         desc: "Agentic routing for tool calling and multi-step agents. Same smart routing, tuned for agent workloads.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -81,8 +81,8 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Deep",
-        priceIn: 5,
-        priceOut: 10,
+        priceIn: 4,
+        priceOut: 8,
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
         cta: "Talk to a founder",
         href: "mailto:sales@autark.ai",
@@ -91,8 +91,8 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Pro Private",
-        priceIn: 3.75,
-        priceOut: 7.50,
+        priceIn: 3.25,
+        priceOut: 7,
         desc: "The ZDR variant of Autark Pro. Same smart routing, restricted to providers that never train on your prompts.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -101,8 +101,8 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Agent Private",
-        priceIn: 6.25,
-        priceOut: 12.50,
+        priceIn: 1.5,
+        priceOut: 3.75,
         desc: "The ZDR variant of Autark Agent. Same agentic routing, zero data retention.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -111,8 +111,8 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Deep Private",
-        priceIn: 6.25,
-        priceOut: 12.50,
+        priceIn: 5,
+        priceOut: 10,
         desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
         cta: "Talk to a founder",
         href: "mailto:sales@autark.ai",
