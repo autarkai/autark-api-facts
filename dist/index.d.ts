@@ -18,6 +18,8 @@ export interface RoutingMode {
 export declare const ROUTING_MODES: RoutingMode[];
 /** Deprecated internal aliases still accepted by the API for backwards compat. */
 export declare const LEGACY_MODES: string[];
+/** Deprecated PUBLIC names, removed from the contract surface but still routed. */
+export declare const LEGACY_PUBLIC_MODES: string[];
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
  * autark-deep, autark-agent) for the zero-data-retention variant: same quality,

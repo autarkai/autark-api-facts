@@ -5,7 +5,7 @@
 // a shared package and consumed by the marketing site and the dashboard.
 // Dependency-free and framework-agnostic (no React, no Next imports).
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.PRIVATE_SUFFIX = exports.LEGACY_MODES = exports.ROUTING_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
+exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.PRIVATE_SUFFIX = exports.LEGACY_PUBLIC_MODES = exports.LEGACY_MODES = exports.ROUTING_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
 exports.formatPrice = formatPrice;
 exports.formatAudioPrice = formatAudioPrice;
 /** Base URL customers point their OpenAI SDK at. */
@@ -26,16 +26,6 @@ exports.ROUTING_MODES = [
         desc: "Autark classifies each request and routes it to the best model for the job. This is what most teams should use.",
     },
     {
-        model: "autark-open",
-        label: "Autark Open",
-        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
-    },
-    {
-        model: "autark-flash",
-        label: "Autark Flash",
-        desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
-    },
-    {
         model: "autark-pro",
         label: "Autark Pro",
         desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
@@ -53,6 +43,8 @@ exports.ROUTING_MODES = [
 ];
 /** Deprecated internal aliases still accepted by the API for backwards compat. */
 exports.LEGACY_MODES = ["flash", "pro", "ultra"];
+/** Deprecated PUBLIC names, removed from the contract surface but still routed. */
+exports.LEGACY_PUBLIC_MODES = ["autark-flash", "autark-open", "autark"];
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
  * autark-deep, autark-agent) for the zero-data-retention variant: same quality,
@@ -65,29 +57,8 @@ exports.PRIVATE_SUFFIX = "-private";
  * (flash/pro/ultra) for backwards compatibility; both are normalized
  * server-side to the stored internal mode.
  */
-exports.USAGE_MODE_FILTER = ["autark-open", "autark-flash", "autark-pro", "autark-agent", "autark-deep"];
+exports.USAGE_MODE_FILTER = ["autark-pro", "autark-agent", "autark-deep"];
 exports.PRICING_TIERS = [
-    {
-        label: "Autark Open",
-        priceIn: 1.00,
-        priceOut: 2.20,
-        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
-        cta: "Get Started",
-        href: exports.DASHBOARD_URL,
-        category: "general",
-        highlighted: false,
-    },
-    {
-        label: "Autark Flash",
-        priceIn: 1,
-        priceOut: 2,
-        desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
-        cta: "Get Started",
-        href: exports.DASHBOARD_URL,
-        category: "general",
-        highlighted: false,
-        zdr: true,
-    },
     {
         label: "Autark Pro",
         priceIn: 3,
@@ -168,7 +139,7 @@ function formatAudioPrice(usdPerMinute) {
     return `$${usdPerMinute}/min`;
 }
 exports.CHAT_PARAMS = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent, or autark-flash. Defaults to autark-pro." },
+    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, or autark-agent. Defaults to autark-pro." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 2048, max: 131072." },
@@ -191,7 +162,7 @@ exports.ERROR_CODES = [
 exports.REQUEST_HEADERS = [
     {
         header: "x-autark-mode",
-        desc: "Override the routing mode (auto, autark-pro, autark-deep, autark-agent, or autark-flash) per request without changing the model field.",
+        desc: "Override the routing mode (auto, autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
         soon: true,
     },
     {

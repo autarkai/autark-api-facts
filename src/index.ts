@@ -24,13 +24,13 @@ export const RATE_LIMIT_RPM = 60;
 /* Routing modes — the values accepted in the `model` request field.  */
 /*                                                                    */
 /* Canonical PUBLIC names per backend/app/router/modes.py ("Product   */
-/* decision"): auto, autark-flash, autark-pro, autark-agent, autark-  */
-/* deep (+ -private ZDR suffix on the three contracts).               */
+/* decision"): auto, autark-pro, autark-agent, autark-deep            */
+/* (+ -private ZDR suffix on the three contracts).                    */
 /*   autark-pro    → pro   (internal)                                 */
 /*   autark-deep   → ultra (internal)                                 */
-/*   autark-flash  → flash (internal, legacy)                         */
-/*   autark-open   → open  (internal, legacy)                         */
-/* The internal names (flash/pro/ultra) are DEPRECATED aliases.       */
+/*   autark-agent  → autark-agent (internal)                          */
+/* The internal names (flash/pro/ultra) and the legacy public names   */
+/* (autark-flash, autark-open) are DEPRECATED aliases kept working.   */
 /* ------------------------------------------------------------------ */
 
 export interface RoutingMode {
@@ -45,16 +45,6 @@ export const ROUTING_MODES: RoutingMode[] = [
         model: "auto",
         label: "Auto",
         desc: "Autark classifies each request and routes it to the best model for the job. This is what most teams should use.",
-    },
-    {
-        model: "autark-open",
-        label: "Autark Open",
-        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
-    },
-    {
-        model: "autark-flash",
-        label: "Autark Flash",
-        desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
     },
     {
         model: "autark-pro",
@@ -76,6 +66,9 @@ export const ROUTING_MODES: RoutingMode[] = [
 /** Deprecated internal aliases still accepted by the API for backwards compat. */
 export const LEGACY_MODES: string[] = ["flash", "pro", "ultra"];
 
+/** Deprecated PUBLIC names, removed from the contract surface but still routed. */
+export const LEGACY_PUBLIC_MODES: string[] = ["autark-flash", "autark-open", "autark"];
+
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
  * autark-deep, autark-agent) for the zero-data-retention variant: same quality,
@@ -89,7 +82,7 @@ export const PRIVATE_SUFFIX = "-private";
  * (flash/pro/ultra) for backwards compatibility; both are normalized
  * server-side to the stored internal mode.
  */
-export const USAGE_MODE_FILTER: string[] = ["autark-open", "autark-flash", "autark-pro", "autark-agent", "autark-deep"];
+export const USAGE_MODE_FILTER: string[] = ["autark-pro", "autark-agent", "autark-deep"];
 
 /* ------------------------------------------------------------------ */
 /* Pricing tiers — token prices are USD per 1,000,000 tokens.         */
@@ -114,27 +107,6 @@ export interface PricingTier {
 }
 
 export const PRICING_TIERS: PricingTier[] = [
-    {
-        label: "Autark Open",
-        priceIn: 1.00,
-        priceOut: 2.20,
-        desc: "Cheapest models on the Autark platform. Same classifier, same routing logic — limited to budget-friendly models. For hobbyists, prototyping, and non-sensitive workloads.",
-        cta: "Get Started",
-        href: DASHBOARD_URL,
-        category: "general",
-        highlighted: false,
-    },
-    {
-        label: "Autark Flash",
-        priceIn: 1,
-        priceOut: 2,
-        desc: "Cost-optimized. Routes to the cheapest model that still delivers quality results. For simple queries, classification, and high-throughput workloads.",
-        cta: "Get Started",
-        href: DASHBOARD_URL,
-        category: "general",
-        highlighted: false,
-        zdr: true,
-    },
     {
         label: "Autark Pro",
         priceIn: 3,
@@ -248,7 +220,7 @@ export interface ChatParam {
 }
 
 export const CHAT_PARAMS: ChatParam[] = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent, or autark-flash. Defaults to autark-pro." },
+    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, or autark-agent. Defaults to autark-pro." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 2048, max: 131072." },
@@ -294,7 +266,7 @@ export interface HeaderDoc {
 export const REQUEST_HEADERS: HeaderDoc[] = [
     {
         header: "x-autark-mode",
-        desc: "Override the routing mode (auto, autark-pro, autark-deep, autark-agent, or autark-flash) per request without changing the model field.",
+        desc: "Override the routing mode (auto, autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
         soon: true,
     },
     {
