@@ -109,6 +109,8 @@ export interface PricingTier {
     href: string;
     category: "general" | "specialist";
     highlighted?: boolean;
+    /** True when this tier is a `-private` (ZDR) variant. Drives the ZDR badge. */
+    zdr?: boolean;
 }
 
 export const PRICING_TIERS: PricingTier[] = [
@@ -131,6 +133,7 @@ export const PRICING_TIERS: PricingTier[] = [
         href: DASHBOARD_URL,
         category: "general",
         highlighted: false,
+        zdr: true,
     },
     {
         label: "Autark Pro",
@@ -143,6 +146,16 @@ export const PRICING_TIERS: PricingTier[] = [
         highlighted: true,
     },
     {
+        label: "Autark Pro Private",
+        priceIn: 3.75,
+        priceOut: 7.50,
+        desc: "The ZDR variant of Autark Pro. Same smart routing, restricted to providers that never train on your prompts.",
+        cta: "Get Started",
+        href: DASHBOARD_URL,
+        category: "general",
+        zdr: true,
+    },
+    {
         label: "Autark Agent",
         priceIn: 5,
         priceOut: 10,
@@ -153,6 +166,16 @@ export const PRICING_TIERS: PricingTier[] = [
         highlighted: false,
     },
     {
+        label: "Autark Agent Private",
+        priceIn: 6.25,
+        priceOut: 12.50,
+        desc: "The ZDR variant of Autark Agent. Same agentic routing, zero data retention.",
+        cta: "Get Started",
+        href: DASHBOARD_URL,
+        category: "general",
+        zdr: true,
+    },
+    {
         label: "Autark Deep",
         priceIn: 5,
         priceOut: 10,
@@ -161,6 +184,16 @@ export const PRICING_TIERS: PricingTier[] = [
         href: "mailto:sales@autark.ai",
         category: "general",
         highlighted: false,
+    },
+    {
+        label: "Autark Deep Private",
+        priceIn: 6.25,
+        priceOut: 12.50,
+        desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
+        cta: "Talk to a founder",
+        href: "mailto:sales@autark.ai",
+        category: "general",
+        zdr: true,
     },
 ];
 

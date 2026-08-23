@@ -86,6 +86,7 @@ exports.PRICING_TIERS = [
         href: exports.DASHBOARD_URL,
         category: "general",
         highlighted: false,
+        zdr: true,
     },
     {
         label: "Autark Pro",
@@ -98,6 +99,16 @@ exports.PRICING_TIERS = [
         highlighted: true,
     },
     {
+        label: "Autark Pro Private",
+        priceIn: 3.75,
+        priceOut: 7.50,
+        desc: "The ZDR variant of Autark Pro. Same smart routing, restricted to providers that never train on your prompts.",
+        cta: "Get Started",
+        href: exports.DASHBOARD_URL,
+        category: "general",
+        zdr: true,
+    },
+    {
         label: "Autark Agent",
         priceIn: 5,
         priceOut: 10,
@@ -108,6 +119,16 @@ exports.PRICING_TIERS = [
         highlighted: false,
     },
     {
+        label: "Autark Agent Private",
+        priceIn: 6.25,
+        priceOut: 12.50,
+        desc: "The ZDR variant of Autark Agent. Same agentic routing, zero data retention.",
+        cta: "Get Started",
+        href: exports.DASHBOARD_URL,
+        category: "general",
+        zdr: true,
+    },
+    {
         label: "Autark Deep",
         priceIn: 5,
         priceOut: 10,
@@ -116,6 +137,16 @@ exports.PRICING_TIERS = [
         href: "mailto:sales@autark.ai",
         category: "general",
         highlighted: false,
+    },
+    {
+        label: "Autark Deep Private",
+        priceIn: 6.25,
+        priceOut: 12.50,
+        desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
+        cta: "Talk to a founder",
+        href: "mailto:sales@autark.ai",
+        category: "general",
+        zdr: true,
     },
 ];
 /** Format a per-1M-token price as a display string, e.g. `$3`. */

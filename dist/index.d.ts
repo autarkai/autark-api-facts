@@ -43,6 +43,8 @@ export interface PricingTier {
     href: string;
     category: "general" | "specialist";
     highlighted?: boolean;
+    /** True when this tier is a `-private` (ZDR) variant. Drives the ZDR badge. */
+    zdr?: boolean;
 }
 export declare const PRICING_TIERS: PricingTier[];
 /** Format a per-1M-token price as a display string, e.g. `$3`. */
