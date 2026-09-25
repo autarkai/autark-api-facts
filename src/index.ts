@@ -63,18 +63,25 @@ export const ROUTING_MODES: RoutingMode[] = [
     },
 ];
 
-/** Deprecated internal aliases still accepted by the API for backwards compat. */
-export const LEGACY_MODES: string[] = ["flash", "pro", "ultra"];
-
-/** Deprecated PUBLIC names, removed from the contract surface but still routed. */
-export const LEGACY_PUBLIC_MODES: string[] = ["autark-flash", "autark-open", "autark"];
-
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
  * autark-deep, autark-agent) for the zero-data-retention variant: same quality,
  * restricted to providers that never train on your prompts.
  */
 export const PRIVATE_SUFFIX = "-private";
+
+/** The three `-private` (ZDR) contract names, for docs rendering. */
+export const PRIVATE_MODES: string[] = [
+    "autark-pro-private",
+    "autark-agent-private",
+    "autark-deep-private",
+];
+
+/** Deprecated internal aliases still accepted by the API for backwards compat. */
+export const LEGACY_MODES: string[] = ["flash", "pro", "ultra"];
+
+/** Deprecated PUBLIC names, removed from the contract surface but still routed. */
+export const LEGACY_PUBLIC_MODES: string[] = ["autark-flash", "autark-open", "autark"];
 
 /**
  * Values accepted by the `mode` filter on GET /v1/usage.
@@ -220,13 +227,19 @@ export interface ChatParam {
 }
 
 export const CHAT_PARAMS: ChatParam[] = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, or autark-agent. Defaults to autark-pro." },
+    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent (plus -private variants). Defaults to auto." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
-    { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 2048, max: 131072." },
+    { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 8192, max: 131072." },
     { name: "temperature", type: "float", desc: "Sampling temperature 0-2. Default: 0.7." },
-    { name: "response_format", type: "object", desc: '{"type": "json_object"} for structured JSON output.' },
+    { name: "top_p", type: "float", desc: "Nucleus sampling 0-1. Default: 1.0." },
+    { name: "n", type: "integer", desc: "Number of completions. Default: 1, max: 10." },
+    { name: "stop", type: "string[]", desc: "Up to 4 sequences where generation stops." },
+    { name: "user", type: "string", desc: "End-user identifier for abuse monitoring." },
+    { name: "response_format", type: "object", desc: '{"type": "json_object"} or {"type": "json_schema", "json_schema": {...}} for structured output.' },
     { name: "tools", type: "array", desc: "Function calling tools. OpenAI-compatible." },
+    { name: "tool_choice", type: "string | object", desc: "Force a specific tool, or 'auto' / 'none'." },
+    { name: "parallel_tool_calls", type: "boolean", desc: "Allow multiple tool calls in one turn." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -276,16 +289,14 @@ export const REQUEST_HEADERS: HeaderDoc[] = [
     },
     {
         header: "x-autark-no-bandit",
-        desc: 'Autark routes with the A-TEM evaluation matrix by default. Set to "false" to opt into legacy bandit-based (learned) routing instead.',
+        desc: 'Advanced. Set to "false" to opt into an alternate model-selection method. Leave it unset for the default behaviour.',
         soon: false,
     },
 ];
 
 export const RESPONSE_HEADERS: HeaderDoc[] = [
-    { header: "x-autark-provider", desc: "Which provider handled the request (e.g. groq, fireworks, deepseek)." },
-    { header: "x-autark-model", desc: "The underlying model that served the request." },
-    { header: "x-autark-tier", desc: "The capability tier used for routing this request." },
     { header: "x-request-id", desc: "Unique request identifier — include it when contacting support." },
+    { header: "x-autark-deprecated", desc: "Set when you used a legacy model name, telling you its replacement." },
 ];
 
 export const RATE_LIMIT_HEADERS: HeaderDoc[] = [
@@ -308,5 +319,15 @@ export const ENDPOINTS: Endpoint[] = [
     { method: "POST", path: "/v1/chat/completions", desc: "Create a chat completion. OpenAI-compatible request and response." },
     { method: "GET", path: "/v1/models", desc: "List models available through Autark." },
     { method: "GET", path: "/v1/usage", desc: "Current token usage and estimated savings for your account." },
+    { method: "GET", path: "/v1/me", desc: "Your account profile, current balance, and this-month usage." },
+    { method: "GET", path: "/v1/me/balance", desc: "Current credit balance for the authenticated account." },
+    { method: "GET", path: "/v1/me/daily", desc: "Per-day token usage for the current month." },
+    { method: "GET", path: "/v1/keys", desc: "List your API keys and their spend caps." },
+    { method: "POST", path: "/v1/keys", desc: "Create an API key (optionally with a spend cap)." },
+    { method: "PATCH", path: "/v1/keys/{key_id}", desc: "Update a key's name or spend cap." },
+    { method: "DELETE", path: "/v1/keys/{key_id}", desc: "Revoke an API key." },
+    { method: "GET", path: "/v1/pricing", desc: "Live per-model token prices (no auth required)." },
+    { method: "GET", path: "/v1/pricing/{model}", desc: "Live price for a single model." },
+    { method: "POST", path: "/v1/trial", desc: "Request a trial key with starter credits." },
     { method: "GET", path: "/health", desc: "Health check with provider status." },
 ];
