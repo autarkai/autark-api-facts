@@ -361,6 +361,10 @@ export interface Endpoint {
  *     signup plumbing the website calls, not API surface.
  *   - `/v1/web/search` and `/v1/web/extract` are an internal Exa proxy with no
  *     billing wired up and no caller; they are not a product yet.
+ *   - `/v1/pricing` and `/v1/pricing/{model}` were REMOVED, not just hidden.
+ *     They scraped Fireworks/Groq/DeepSeek list prices — what WE pay — and
+ *     served them unauthenticated, exposing the routed model roster by upstream
+ *     ID, our per-model cost, and therefore our margin. Do not re-add them.
  *
  * Before adding an entry: confirm a paying customer with an API key can call it
  * and would want to. If it is called by our own frontend, it does not belong
@@ -377,7 +381,5 @@ export const ENDPOINTS: Endpoint[] = [
     { method: "POST", path: "/v1/keys", auth: "api-key", desc: "Create an API key (optionally with a spend cap)." },
     { method: "PATCH", path: "/v1/keys/{key_id}", auth: "api-key", desc: "Update a key's name or spend cap." },
     { method: "DELETE", path: "/v1/keys/{key_id}", auth: "api-key", desc: "Revoke an API key." },
-    { method: "GET", path: "/v1/pricing", auth: "public", desc: "Live per-model token prices. No authentication required." },
-    { method: "GET", path: "/v1/pricing/{model}", auth: "public", desc: "Live price for a single model. No authentication required." },
     { method: "GET", path: "/health", auth: "public", desc: "Health check with provider status. No authentication required." },
 ];
