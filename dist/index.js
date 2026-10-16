@@ -23,7 +23,7 @@ exports.ROUTING_MODES = [
     {
         model: "auto",
         label: "Auto",
-        desc: "Autark classifies each request and routes it to the best model for the job. This is what most teams should use.",
+        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
     },
     {
         model: "autark-pro",
@@ -145,7 +145,7 @@ function formatAudioPrice(usdPerMinute) {
     return `$${usdPerMinute}/min`;
 }
 exports.CHAT_PARAMS = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent (plus -private variants). Defaults to auto." },
+    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent (plus -private variants). Defaults to auto, which uses your dashboard's default contract (Autark Pro unless changed)." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 8192, max: 131072." },
