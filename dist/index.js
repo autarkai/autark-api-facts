@@ -184,8 +184,7 @@ exports.ERROR_CODES = [
     { code: "400", label: "Bad request", desc: "Invalid JSON, missing required fields, or the request was blocked by our safety filters." },
     { code: "401", label: "Unauthorized", desc: "Invalid or missing API key. Check your Authorization header." },
     { code: "402", label: "Insufficient credits", desc: "Your account is out of credits. Add credits in the dashboard." },
-    { code: "403", label: "Spend cap exceeded", desc: "This key hit its spend cap. Increase the cap in the dashboard." },
-    { code: "413", label: "Payload too large", desc: "Audio uploads exceed the 100 MB limit." },
+    { code: "403", label: "Spend cap exceeded", desc: "This key or gateway hit its monthly spend cap. Raise or clear the cap in Settings." },
     { code: "422", label: "Unprocessable entity", desc: "Valid JSON, but one or more parameter values are invalid." },
     { code: "429", label: "Rate limit exceeded", desc: `More than ${exports.RATE_LIMIT_RPM} requests per minute for this key. Retry after the Retry-After header duration.` },
     { code: "500", label: "Internal server error", desc: "Something went wrong on our end. Contact support if it persists." },
@@ -194,7 +193,7 @@ exports.ERROR_CODES = [
 exports.REQUEST_HEADERS = [
     {
         header: "x-autark-mode",
-        desc: "Override the routing mode (auto, autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
+        desc: "Override the routing contract (autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
         soon: true,
     },
     {
@@ -204,13 +203,15 @@ exports.REQUEST_HEADERS = [
     },
     {
         header: "x-autark-no-bandit",
-        desc: 'Advanced. Set to "false" to opt into an alternate model-selection method. Leave it unset for the default behaviour.',
+        desc: 'Advanced. Set to "false" to opt into legacy bandit-only routing instead of the default A-TEM routing. Any other value (or leaving it unset) uses A-TEM.',
         soon: false,
     },
 ];
 exports.RESPONSE_HEADERS = [
-    { header: "x-request-id", desc: "Unique request identifier — include it when contacting support." },
-    { header: "x-autark-deprecated", desc: "Set when you used a legacy model name, telling you its replacement." },
+    {
+        header: "x-request-id",
+        desc: "Unique request identifier — include it when contacting support.",
+    },
 ];
 exports.RATE_LIMIT_HEADERS = [
     { header: "X-RateLimit-Limit", desc: "Your per-minute request limit." },
