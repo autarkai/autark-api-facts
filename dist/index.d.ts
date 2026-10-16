@@ -110,5 +110,35 @@ export interface Endpoint {
     method: string;
     path: string;
     desc: string;
+    /**
+     * Who can call this. Rendered as a chip next to the path.
+     *
+     * "public"  — no credentials at all.
+     * "api-key" — requires `Authorization: Bearer autark_...`.
+     *
+     * Every entry MUST declare this. The list previously carried no auth
+     * information, so nine endpoints that 401 without a key looked identical to
+     * the two that are genuinely open. A reader had no way to tell them apart.
+     */
+    auth: "public" | "api-key";
 }
+/**
+ * Customer-facing endpoints only.
+ *
+ * NOT a dump of the app's route table. Internal endpoints are deliberately
+ * absent, because the docs page is public and unauthenticated:
+ *
+ *   - `/v1/trial` is server-to-server (the marketing site holds a shared secret
+ *     and calls it). Listing it advertised an attack surface and misled every
+ *     developer who tried it — it returns 403 without the secret.
+ *   - `/admin/*` (85 routes) is operator-only.
+ *   - `/v1/register`, `/v1/waitlist`, `/v1/contact`, `/v1/invite/verify` are
+ *     signup plumbing the website calls, not API surface.
+ *   - `/v1/web/search` and `/v1/web/extract` are an internal Exa proxy with no
+ *     billing wired up and no caller; they are not a product yet.
+ *
+ * Before adding an entry: confirm a paying customer with an API key can call it
+ * and would want to. If it is called by our own frontend, it does not belong
+ * here.
+ */
 export declare const ENDPOINTS: Endpoint[];

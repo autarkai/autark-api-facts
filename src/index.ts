@@ -334,21 +334,50 @@ export interface Endpoint {
     method: string;
     path: string;
     desc: string;
+    /**
+     * Who can call this. Rendered as a chip next to the path.
+     *
+     * "public"  — no credentials at all.
+     * "api-key" — requires `Authorization: Bearer autark_...`.
+     *
+     * Every entry MUST declare this. The list previously carried no auth
+     * information, so nine endpoints that 401 without a key looked identical to
+     * the two that are genuinely open. A reader had no way to tell them apart.
+     */
+    auth: "public" | "api-key";
 }
 
+/**
+ * Customer-facing endpoints only.
+ *
+ * NOT a dump of the app's route table. Internal endpoints are deliberately
+ * absent, because the docs page is public and unauthenticated:
+ *
+ *   - `/v1/trial` is server-to-server (the marketing site holds a shared secret
+ *     and calls it). Listing it advertised an attack surface and misled every
+ *     developer who tried it — it returns 403 without the secret.
+ *   - `/admin/*` (85 routes) is operator-only.
+ *   - `/v1/register`, `/v1/waitlist`, `/v1/contact`, `/v1/invite/verify` are
+ *     signup plumbing the website calls, not API surface.
+ *   - `/v1/web/search` and `/v1/web/extract` are an internal Exa proxy with no
+ *     billing wired up and no caller; they are not a product yet.
+ *
+ * Before adding an entry: confirm a paying customer with an API key can call it
+ * and would want to. If it is called by our own frontend, it does not belong
+ * here.
+ */
 export const ENDPOINTS: Endpoint[] = [
-    { method: "POST", path: "/v1/chat/completions", desc: "Create a chat completion. OpenAI-compatible request and response." },
-    { method: "GET", path: "/v1/models", desc: "List models available through Autark." },
-    { method: "GET", path: "/v1/usage", desc: "Current token usage and estimated savings for your account." },
-    { method: "GET", path: "/v1/me", desc: "Your account profile, current balance, and this-month usage." },
-    { method: "GET", path: "/v1/me/balance", desc: "Current credit balance for the authenticated account." },
-    { method: "GET", path: "/v1/me/daily", desc: "Per-day token usage for the current month." },
-    { method: "GET", path: "/v1/keys", desc: "List your API keys and their spend caps." },
-    { method: "POST", path: "/v1/keys", desc: "Create an API key (optionally with a spend cap)." },
-    { method: "PATCH", path: "/v1/keys/{key_id}", desc: "Update a key's name or spend cap." },
-    { method: "DELETE", path: "/v1/keys/{key_id}", desc: "Revoke an API key." },
-    { method: "GET", path: "/v1/pricing", desc: "Live per-model token prices (no auth required)." },
-    { method: "GET", path: "/v1/pricing/{model}", desc: "Live price for a single model." },
-    { method: "POST", path: "/v1/trial", desc: "Request a trial key with starter credits." },
-    { method: "GET", path: "/health", desc: "Health check with provider status." },
+    { method: "POST", path: "/v1/chat/completions", auth: "api-key", desc: "Create a chat completion. OpenAI-compatible request and response." },
+    { method: "GET", path: "/v1/models", auth: "api-key", desc: "List the models available to your account." },
+    { method: "GET", path: "/v1/usage", auth: "api-key", desc: "Current token usage and estimated savings for your account." },
+    { method: "GET", path: "/v1/me", auth: "api-key", desc: "Your account profile, current balance, and this-month usage." },
+    { method: "GET", path: "/v1/me/balance", auth: "api-key", desc: "Current credit balance for the authenticated account." },
+    { method: "GET", path: "/v1/me/daily", auth: "api-key", desc: "Per-day token usage for the current month." },
+    { method: "GET", path: "/v1/keys", auth: "api-key", desc: "List your API keys and their spend caps." },
+    { method: "POST", path: "/v1/keys", auth: "api-key", desc: "Create an API key (optionally with a spend cap)." },
+    { method: "PATCH", path: "/v1/keys/{key_id}", auth: "api-key", desc: "Update a key's name or spend cap." },
+    { method: "DELETE", path: "/v1/keys/{key_id}", auth: "api-key", desc: "Revoke an API key." },
+    { method: "GET", path: "/v1/pricing", auth: "public", desc: "Live per-model token prices. No authentication required." },
+    { method: "GET", path: "/v1/pricing/{model}", auth: "public", desc: "Live price for a single model. No authentication required." },
+    { method: "GET", path: "/health", auth: "public", desc: "Health check with provider status. No authentication required." },
 ];
