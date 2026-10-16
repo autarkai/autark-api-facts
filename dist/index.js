@@ -230,8 +230,10 @@ exports.RATE_LIMIT_HEADERS = [
  *   - `/admin/*` (85 routes) is operator-only.
  *   - `/v1/register`, `/v1/waitlist`, `/v1/contact`, `/v1/invite/verify` are
  *     signup plumbing the website calls, not API surface.
- *   - `/v1/web/search` and `/v1/web/extract` are an internal Exa proxy with no
- *     billing wired up and no caller; they are not a product yet.
+ *   - `/v1/web/search` and `/v1/web/extract` were REMOVED. An Exa proxy with no
+ *     billing wired up, no caller, and EXA_API_KEY never set in production (so
+ *     /extract always 503'd and /search silently fell back to DuckDuckGo). It
+ *     was a free unmetered proxy behind auth. Do not re-add without billing.
  *   - `/v1/pricing` and `/v1/pricing/{model}` were REMOVED, not just hidden.
  *     They scraped Fireworks/Groq/DeepSeek list prices — what WE pay — and
  *     served them unauthenticated, exposing the routed model roster by upstream
