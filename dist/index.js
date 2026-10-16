@@ -5,7 +5,7 @@
 // a shared package and consumed by the marketing site and the dashboard.
 // Dependency-free and framework-agnostic (no React, no Next imports).
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.LEGACY_PUBLIC_MODES = exports.LEGACY_MODES = exports.PRIVATE_MODES = exports.PRIVATE_SUFFIX = exports.ROUTING_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
+exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.LEGACY_PUBLIC_MODES = exports.LEGACY_MODES = exports.PRIVATE_MODES = exports.PRIVATE_SUFFIX = exports.ROUTING_MODES = exports.CONTRACT_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
 exports.formatPrice = formatPrice;
 exports.formatAudioPrice = formatAudioPrice;
 /** Base URL customers point their OpenAI SDK at. */
@@ -19,12 +19,17 @@ exports.API_KEY_PREFIX = "autark_sk_";
 exports.API_KEY_FORMAT = `${exports.API_KEY_PREFIX} followed by 48 hexadecimal characters`;
 /** Requests allowed per minute, per API key (enforced in backend middleware). */
 exports.RATE_LIMIT_RPM = 60;
-exports.ROUTING_MODES = [
-    {
-        model: "auto",
-        label: "Auto",
-        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
-    },
+/**
+ * The three CONTRACTS, for customer-facing docs.
+ *
+ * This is what the website renders. `auto` is deliberately NOT here: it is a
+ * convenience alias that resolves to the dashboard default (Autark Pro when
+ * unset), so listing it beside the contracts invites the question "which one do
+ * I pick?" when the answer is always a contract. See ROUTING_MODES for the
+ * dashboard's list, which DOES include `auto` because it is the row that
+ * represents "no default set".
+ */
+exports.CONTRACT_MODES = [
     {
         model: "autark-pro",
         label: "Autark Pro",
@@ -40,6 +45,21 @@ exports.ROUTING_MODES = [
         label: "Autark Deep",
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
     },
+];
+/**
+ * Routing modes INCLUDING `auto`, for the dashboard's Default Model picker.
+ *
+ * The picker needs `auto` as a selectable row: choosing it clears the stored
+ * default back to NULL, and it renders as selected when no default is set. The
+ * website must NOT use this list — use CONTRACT_MODES. See the note there.
+ */
+exports.ROUTING_MODES = [
+    {
+        model: "auto",
+        label: "Auto",
+        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
+    },
+    ...exports.CONTRACT_MODES,
 ];
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,
@@ -145,7 +165,7 @@ function formatAudioPrice(usdPerMinute) {
     return `$${usdPerMinute}/min`;
 }
 exports.CHAT_PARAMS = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent (plus -private variants). Defaults to auto, which uses your dashboard's default contract (Autark Pro unless changed)." },
+    { name: "model", type: "string", desc: "autark-pro, autark-agent or autark-deep (plus -private variants). Pick the contract that matches your workload. Omit it and the request uses `auto`, which resolves to your dashboard's default contract (Autark Pro unless changed)." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 8192, max: 131072." },

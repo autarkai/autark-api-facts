@@ -15,6 +15,24 @@ export interface RoutingMode {
     label: string;
     desc: string;
 }
+/**
+ * The three CONTRACTS, for customer-facing docs.
+ *
+ * This is what the website renders. `auto` is deliberately NOT here: it is a
+ * convenience alias that resolves to the dashboard default (Autark Pro when
+ * unset), so listing it beside the contracts invites the question "which one do
+ * I pick?" when the answer is always a contract. See ROUTING_MODES for the
+ * dashboard's list, which DOES include `auto` because it is the row that
+ * represents "no default set".
+ */
+export declare const CONTRACT_MODES: RoutingMode[];
+/**
+ * Routing modes INCLUDING `auto`, for the dashboard's Default Model picker.
+ *
+ * The picker needs `auto` as a selectable row: choosing it clears the stored
+ * default back to NULL, and it renders as selected when no default is set. The
+ * website must NOT use this list — use CONTRACT_MODES. See the note there.
+ */
 export declare const ROUTING_MODES: RoutingMode[];
 /**
  * The `-private` (ZDR) suffix. Append it to any contract name (autark-pro,

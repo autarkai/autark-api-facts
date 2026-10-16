@@ -40,12 +40,17 @@ export interface RoutingMode {
     desc: string;
 }
 
-export const ROUTING_MODES: RoutingMode[] = [
-    {
-        model: "auto",
-        label: "Auto",
-        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
-    },
+/**
+ * The three CONTRACTS, for customer-facing docs.
+ *
+ * This is what the website renders. `auto` is deliberately NOT here: it is a
+ * convenience alias that resolves to the dashboard default (Autark Pro when
+ * unset), so listing it beside the contracts invites the question "which one do
+ * I pick?" when the answer is always a contract. See ROUTING_MODES for the
+ * dashboard's list, which DOES include `auto` because it is the row that
+ * represents "no default set".
+ */
+export const CONTRACT_MODES: RoutingMode[] = [
     {
         model: "autark-pro",
         label: "Autark Pro",
@@ -61,6 +66,22 @@ export const ROUTING_MODES: RoutingMode[] = [
         label: "Autark Deep",
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
     },
+];
+
+/**
+ * Routing modes INCLUDING `auto`, for the dashboard's Default Model picker.
+ *
+ * The picker needs `auto` as a selectable row: choosing it clears the stored
+ * default back to NULL, and it renders as selected when no default is set. The
+ * website must NOT use this list — use CONTRACT_MODES. See the note there.
+ */
+export const ROUTING_MODES: RoutingMode[] = [
+    {
+        model: "auto",
+        label: "Auto",
+        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
+    },
+    ...CONTRACT_MODES,
 ];
 
 /**
@@ -227,7 +248,7 @@ export interface ChatParam {
 }
 
 export const CHAT_PARAMS: ChatParam[] = [
-    { name: "model", type: "string", desc: "auto, autark-pro, autark-deep, autark-agent (plus -private variants). Defaults to auto, which uses your dashboard's default contract (Autark Pro unless changed)." },
+    { name: "model", type: "string", desc: "autark-pro, autark-agent or autark-deep (plus -private variants). Pick the contract that matches your workload. Omit it and the request uses `auto`, which resolves to your dashboard's default contract (Autark Pro unless changed)." },
     { name: "messages", type: "array", desc: "Standard OpenAI message format." },
     { name: "stream", type: "boolean", desc: "Enable SSE streaming. Default: false." },
     { name: "max_tokens", type: "integer", desc: "Max output tokens. Default: 8192, max: 131072." },
