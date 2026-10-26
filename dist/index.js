@@ -33,12 +33,12 @@ exports.CONTRACT_MODES = [
     {
         model: "autark-pro",
         label: "Autark Pro",
-        desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
+        desc: "Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
     },
     {
         model: "autark-agent",
         label: "Autark Agent",
-        desc: "Agentic routing. Built for tool calling and multi-step agent workloads. Same smart routing, tuned for agents.",
+        desc: "Built for tool calling and multi-step agent workloads. The same automatic model selection, tuned for agents.",
     },
     {
         model: "autark-deep",
@@ -57,7 +57,7 @@ exports.ROUTING_MODES = [
     {
         model: "auto",
         label: "Auto",
-        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias — pick a contract below to choose routing explicitly.",
+        desc: "Uses the default contract set in your dashboard (Autark Pro unless you change it). A convenience alias. Pick a contract below to choose the model explicitly.",
     },
     ...exports.CONTRACT_MODES,
 ];
@@ -89,7 +89,7 @@ exports.PRICING_TIERS = [
         label: "Autark Pro",
         priceIn: 2.5,
         priceOut: 5.5,
-        desc: "Smart routing. Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
+        desc: "Every request goes to the best model for that specific task. The default choice for balanced quality and cost.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
         category: "general",
@@ -99,7 +99,7 @@ exports.PRICING_TIERS = [
         label: "Autark Agent",
         priceIn: 1.2,
         priceOut: 3,
-        desc: "Agentic routing for tool calling and multi-step agents. Same smart routing, tuned for agent workloads.",
+        desc: "Built for tool calling and multi-step agents. The same automatic model selection, tuned for agent workloads.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
         category: "general",
@@ -119,7 +119,7 @@ exports.PRICING_TIERS = [
         label: "Autark Pro Private",
         priceIn: 3.25,
         priceOut: 7,
-        desc: "The ZDR variant of Autark Pro. Same smart routing, restricted to providers that never train on your prompts.",
+        desc: "The ZDR variant of Autark Pro. The same automatic model selection, restricted to providers that never train on your prompts.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
         category: "general",
@@ -129,7 +129,7 @@ exports.PRICING_TIERS = [
         label: "Autark Agent Private",
         priceIn: 1.5,
         priceOut: 3.75,
-        desc: "The ZDR variant of Autark Agent. Same agentic routing, zero data retention.",
+        desc: "The ZDR variant of Autark Agent. The same agent tuning, zero data retention.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
         category: "general",
@@ -193,7 +193,7 @@ exports.ERROR_CODES = [
 exports.REQUEST_HEADERS = [
     {
         header: "x-autark-mode",
-        desc: "Override the routing contract (autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
+        desc: "Override the contract (autark-pro, autark-deep, or autark-agent) per request without changing the model field.",
         soon: true,
     },
     {
