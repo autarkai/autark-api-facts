@@ -205,7 +205,7 @@ exports.REQUEST_HEADERS = [
 exports.RESPONSE_HEADERS = [
     {
         header: "x-request-id",
-        desc: "Unique request identifier — include it when contacting support.",
+        desc: "Unique request identifier. Include it when contacting support.",
     },
 ];
 exports.RATE_LIMIT_HEADERS = [

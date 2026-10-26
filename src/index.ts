@@ -312,7 +312,7 @@ export const REQUEST_HEADERS: HeaderDoc[] = [
 export const RESPONSE_HEADERS: HeaderDoc[] = [
     {
         header: "x-request-id",
-        desc: "Unique request identifier — include it when contacting support.",
+        desc: "Unique request identifier. Include it when contacting support.",
     },
 ];
 
