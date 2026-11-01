@@ -137,8 +137,8 @@ export interface PricingTier {
 export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Pro",
-        priceIn: 2.5,
-        priceOut: 5.5,
+        priceIn: 3.5,
+        priceOut: 9.5,
         desc: "Every request goes to the model that has proven best at that task. The default for most teams.",
         cta: "Get Started",
         href: DASHBOARD_URL,
@@ -150,6 +150,7 @@ export const PRICING_TIERS: PricingTier[] = [
         priceIn: 1.2,
         priceOut: 3,
         desc: "Built for tool calling and multi-step agent workloads. Same selection logic, tuned for agents.",
+
         cta: "Get Started",
         href: DASHBOARD_URL,
         category: "general",
@@ -157,9 +158,10 @@ export const PRICING_TIERS: PricingTier[] = [
     },
     {
         label: "Autark Deep",
-        priceIn: 4,
-        priceOut: 8,
+        priceIn: 5,
+        priceOut: 11,
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
+
         cta: "Talk to a founder",
         href: "/contact",
         category: "general",
@@ -167,8 +169,8 @@ export const PRICING_TIERS: PricingTier[] = [
     },
     {
         label: "Autark Pro Private",
-        priceIn: 3.25,
-        priceOut: 7,
+        priceIn: 4.5,
+        priceOut: 12,
         desc: "The ZDR variant of Autark Pro. Same selection logic, restricted to providers that never train on your prompts.",
         cta: "Get Started",
         href: DASHBOARD_URL,
@@ -180,6 +182,7 @@ export const PRICING_TIERS: PricingTier[] = [
         priceIn: 1.5,
         priceOut: 3.75,
         desc: "The ZDR variant of Autark Agent. Same agent tuning, with zero data retention.",
+
         cta: "Get Started",
         href: DASHBOARD_URL,
         category: "general",
@@ -187,9 +190,10 @@ export const PRICING_TIERS: PricingTier[] = [
     },
     {
         label: "Autark Deep Private",
-        priceIn: 5,
-        priceOut: 10,
+        priceIn: 6.5,
+        priceOut: 14,
         desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
+
         cta: "Talk to a founder",
         href: "/contact",
         category: "general",
