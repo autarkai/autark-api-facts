@@ -4,6 +4,16 @@
 // a shared package and consumed by the marketing site and the dashboard.
 // Dependency-free and framework-agnostic (no React, no Next imports).
 
+/**
+ * Package version. Keep in sync with package.json.
+ *
+ * Why this exists: consumers pin this package by commit SHA in their lockfile,
+ * so a change here does NOT reach them until they re-resolve. Without a version
+ * to compare, that drift is silent — the consumer keeps serving old facts and
+ * nothing looks wrong. Consumers can assert on this to make drift visible.
+ */
+export const FACTS_VERSION = "0.2.0";
+
 /** Base URL customers point their OpenAI SDK at. */
 export const BASE_URL = "https://api.autark.ai/v1";
 
