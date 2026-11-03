@@ -12,7 +12,7 @@
  * to compare, that drift is silent — the consumer keeps serving old facts and
  * nothing looks wrong. Consumers can assert on this to make drift visible.
  */
-export const FACTS_VERSION = "0.2.0";
+export const FACTS_VERSION = "0.3.0";
 
 /** Base URL customers point their OpenAI SDK at. */
 export const BASE_URL = "https://api.autark.ai/v1";
@@ -131,8 +131,18 @@ export const USAGE_MODE_FILTER: string[] = ["autark-pro", "autark-agent", "autar
 export interface PricingTier {
     /** Marketing product name. */
     label: string;
-    /** USD per 1M input tokens. */
+    /** USD per 1M input tokens (cache miss). */
     priceIn: number;
+    /**
+     * USD per 1M CACHED input tokens (cache hit).
+     *
+     * Deliberately a property of the CONTRACT, not of the model that served the
+     * request: provider cache ratios range from 3.2% to 50%, and mirroring them
+     * would make the published price depend on which model the router happened
+     * to pick. One cached rate per contract keeps the rate card a rate card.
+     * See backend/app/metering/logger.py CACHED_INPUT_PRICE_CENTS.
+     */
+    priceInCached: number;
     /** USD per 1M output tokens. */
     priceOut: number;
     desc: string;
@@ -148,6 +158,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Pro",
         priceIn: 3.5,
+        priceInCached: 0.05,
         priceOut: 9.5,
         desc: "Every request goes to the model that has proven best at that task. The default for most teams.",
         cta: "Get Started",
@@ -158,6 +169,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Agent",
         priceIn: 1.2,
+        priceInCached: 0.05,
         priceOut: 3,
         desc: "Built for tool calling and multi-step agent workloads. Same selection logic, tuned for agents.",
 
@@ -169,6 +181,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Deep",
         priceIn: 5,
+        priceInCached: 0.05,
         priceOut: 11,
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
 
@@ -180,6 +193,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Pro Private",
         priceIn: 4.5,
+        priceInCached: 0.0625,
         priceOut: 12,
         desc: "The ZDR variant of Autark Pro. Same selection logic, restricted to providers that never train on your prompts.",
         cta: "Get Started",
@@ -190,6 +204,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Agent Private",
         priceIn: 1.5,
+        priceInCached: 0.0625,
         priceOut: 3.75,
         desc: "The ZDR variant of Autark Agent. Same agent tuning, with zero data retention.",
 
@@ -201,6 +216,7 @@ export const PRICING_TIERS: PricingTier[] = [
     {
         label: "Autark Deep Private",
         priceIn: 6.5,
+        priceInCached: 0.0625,
         priceOut: 14,
         desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
 

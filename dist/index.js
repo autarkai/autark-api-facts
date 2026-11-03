@@ -5,9 +5,18 @@
 // a shared package and consumed by the marketing site and the dashboard.
 // Dependency-free and framework-agnostic (no React, no Next imports).
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.LEGACY_PUBLIC_MODES = exports.LEGACY_MODES = exports.PRIVATE_MODES = exports.PRIVATE_SUFFIX = exports.ROUTING_MODES = exports.CONTRACT_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = void 0;
+exports.ENDPOINTS = exports.RATE_LIMIT_HEADERS = exports.RESPONSE_HEADERS = exports.REQUEST_HEADERS = exports.ERROR_CODES = exports.CHAT_PARAMS = exports.AUDIO_MODELS = exports.PRICING_TIERS = exports.USAGE_MODE_FILTER = exports.LEGACY_PUBLIC_MODES = exports.LEGACY_MODES = exports.PRIVATE_MODES = exports.PRIVATE_SUFFIX = exports.ROUTING_MODES = exports.CONTRACT_MODES = exports.RATE_LIMIT_RPM = exports.API_KEY_FORMAT = exports.API_KEY_PREFIX = exports.DASHBOARD_URL = exports.API_HOST_PATH = exports.BASE_URL = exports.FACTS_VERSION = void 0;
 exports.formatPrice = formatPrice;
 exports.formatAudioPrice = formatAudioPrice;
+/**
+ * Package version. Keep in sync with package.json.
+ *
+ * Why this exists: consumers pin this package by commit SHA in their lockfile,
+ * so a change here does NOT reach them until they re-resolve. Without a version
+ * to compare, that drift is silent — the consumer keeps serving old facts and
+ * nothing looks wrong. Consumers can assert on this to make drift visible.
+ */
+exports.FACTS_VERSION = "0.3.0";
 /** Base URL customers point their OpenAI SDK at. */
 exports.BASE_URL = "https://api.autark.ai/v1";
 /** Host portion of the base URL, e.g. for prose like "point at api.autark.ai/v1". */
@@ -87,8 +96,9 @@ exports.USAGE_MODE_FILTER = ["autark-pro", "autark-agent", "autark-deep"];
 exports.PRICING_TIERS = [
     {
         label: "Autark Pro",
-        priceIn: 2.5,
-        priceOut: 5.5,
+        priceIn: 3.5,
+        priceInCached: 0.05,
+        priceOut: 9.5,
         desc: "Every request goes to the model that has proven best at that task. The default for most teams.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -98,6 +108,7 @@ exports.PRICING_TIERS = [
     {
         label: "Autark Agent",
         priceIn: 1.2,
+        priceInCached: 0.05,
         priceOut: 3,
         desc: "Built for tool calling and multi-step agent workloads. Same selection logic, tuned for agents.",
         cta: "Get Started",
@@ -107,8 +118,9 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Deep",
-        priceIn: 4,
-        priceOut: 8,
+        priceIn: 5,
+        priceInCached: 0.05,
+        priceOut: 11,
         desc: "Deep reasoning for the hardest problems. Multi-step analysis, thinking enabled, investment-grade deliverables.",
         cta: "Talk to a founder",
         href: "/contact",
@@ -117,8 +129,9 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Pro Private",
-        priceIn: 3.25,
-        priceOut: 7,
+        priceIn: 4.5,
+        priceInCached: 0.0625,
+        priceOut: 12,
         desc: "The ZDR variant of Autark Pro. Same selection logic, restricted to providers that never train on your prompts.",
         cta: "Get Started",
         href: exports.DASHBOARD_URL,
@@ -128,6 +141,7 @@ exports.PRICING_TIERS = [
     {
         label: "Autark Agent Private",
         priceIn: 1.5,
+        priceInCached: 0.0625,
         priceOut: 3.75,
         desc: "The ZDR variant of Autark Agent. Same agent tuning, with zero data retention.",
         cta: "Get Started",
@@ -137,8 +151,9 @@ exports.PRICING_TIERS = [
     },
     {
         label: "Autark Deep Private",
-        priceIn: 5,
-        priceOut: 10,
+        priceIn: 6.5,
+        priceInCached: 0.0625,
+        priceOut: 14,
         desc: "The ZDR variant of Autark Deep. Same deep reasoning, zero data retention.",
         cta: "Talk to a founder",
         href: "/contact",

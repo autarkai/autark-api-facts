@@ -1,3 +1,12 @@
+/**
+ * Package version. Keep in sync with package.json.
+ *
+ * Why this exists: consumers pin this package by commit SHA in their lockfile,
+ * so a change here does NOT reach them until they re-resolve. Without a version
+ * to compare, that drift is silent — the consumer keeps serving old facts and
+ * nothing looks wrong. Consumers can assert on this to make drift visible.
+ */
+export declare const FACTS_VERSION = "0.3.0";
 /** Base URL customers point their OpenAI SDK at. */
 export declare const BASE_URL = "https://api.autark.ai/v1";
 /** Host portion of the base URL, e.g. for prose like "point at api.autark.ai/v1". */
@@ -56,8 +65,18 @@ export declare const USAGE_MODE_FILTER: string[];
 export interface PricingTier {
     /** Marketing product name. */
     label: string;
-    /** USD per 1M input tokens. */
+    /** USD per 1M input tokens (cache miss). */
     priceIn: number;
+    /**
+     * USD per 1M CACHED input tokens (cache hit).
+     *
+     * Deliberately a property of the CONTRACT, not of the model that served the
+     * request: provider cache ratios range from 3.2% to 50%, and mirroring them
+     * would make the published price depend on which model the router happened
+     * to pick. One cached rate per contract keeps the rate card a rate card.
+     * See backend/app/metering/logger.py CACHED_INPUT_PRICE_CENTS.
+     */
+    priceInCached: number;
     /** USD per 1M output tokens. */
     priceOut: number;
     desc: string;

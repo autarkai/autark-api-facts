@@ -1,6 +1,6 @@
 {
   "name": "autark-api-facts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Canonical source of truth for customer-facing Autark API facts (base URL, model/mode names, pricing, rate limits, error codes, headers). Shared by the marketing site and the dashboard.",
   "license": "UNLICENSED",
   "private": false,
